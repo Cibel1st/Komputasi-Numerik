@@ -1,7 +1,3 @@
-Berikut adalah penyusunan lengkap **Algoritma Penyelesaian Sistem Persamaan Linear Tiga Variabel (SPLTV)** menggunakan metode **Eliminasi Gauss dengan Partial Pivoting**, yang telah disesuaikan konsistensi indeksnya (menggunakan indeks berbasis-0 `0..2` untuk baris dan `0..3` untuk kolom agar selaras dengan tahap substitusi balik).
-
----
-
 ### 1. Spesifikasi Input dan Output
 
 * **Input:** Matriks *augmented* $A$ berukuran $3 \times 4$ yang merepresentasikan bentuk $Ax = b$:
@@ -126,8 +122,3 @@ END ALGORITMA
 ```
 
 ---
-
-### Ringkasan Kompleksitas
-
-* **Kompleksitas Waktu:** Untuk kasus umum $n$ variabel adalah $O(n^3)$, sedangkan untuk kasus tetap $n = 3$ jumlah operasinya bersifat konstan $O(1)$ (hanya melakukan 2 iterasi pivot utama dan 3 operasi substitusi balik).
-* **Kompleksitas Ruang:** $O(1)$ secara *in-place* karena modifikasi dilakukan langsung pada matriks $A[3][4]$.

@@ -1,2 +1,2 @@
-# Komputas-Numerik
+# Komputasi-Numerik
 Tugas 1 Komputasi Numerik

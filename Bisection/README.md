@@ -1,58 +1,43 @@
+## Algoritma Metode Bisection (Persamaan Non-Linear)
 
----
+Metode Bisection (Bagi Dua) adalah metode numerik tertutup (*bracketing method*) untuk mencari akar persamaan non-linear $f(x) = 0$ berdasarkan **Teorema Nilai Antara**, dengan membagi dua interval $[a, b]$ secara berulang hingga konvergen menuju nilai akar hampiran.
 
-### 1. Spesifikasi Input dan Output
-
+### Spesifikasi Input & Output
 * **Input:**
-* Fungsi non-linear kontinu $f(x)$
-* Batas bawah interval awal $a$ dan batas atas interval awal $b$ (dengan $a \lt b$)
-* Toleransi galat (*error tolerance*) $\epsilon$ (misal $10^{-6}$)
-* Batas maksimum iterasi $\text{max\_iter}$
+  * Fungsi non-linear kontinu $f(x)$
+  * Batas bawah interval awal $a$ dan batas atas interval awal $b$ (dengan $a < b$)
+  * Toleransi galat (*error tolerance*) $\epsilon$ (misal $10^{-6}$)
+  * Batas maksimum iterasi `max_iter`
+* **Output:** Nilai akar hampiran $c$ yang memenuhi $f(c) \approx 0$ beserta jumlah iterasi yang ditempuh.
 
-
-* **Output:** Nilai akar hampiran $c$ yang memenuhi $f(c) \approx 0$ beserta jumlah iterasi yang ditempuh (atau pesan kesalahan jika interval awal tidak mengurung akar).
-
----
-
-### 2. Deskripsi Langkah Algoritma
-
-Metode Biseksi bekerja berdasarkan **Teorema Nilai Antara (*Intermediate Value Theorem*)**, yang menjamin bahwa jika fungsi kontinu $f(x)$ memiliki tanda yang berlawanan pada ujung-ujung interval $[a, b]$, maka terdapat minimal satu akar di dalam interval tersebut.
+### Langkah Algoritma
 
 #### Tahap 1: Validasi Interval Awal (*Bracketing Check*)
-
-1. Evaluasi nilai fungsi pada kedua batas interval, yakni $f(a)$ dan $f(b)$.
-2. Periksa kondisi perubahan tanda dengan syarat $f(a) \cdot f(b) \lt 0$. Jika syarat tidak terpenuhi (bernilai positif atau nol), hentikan algoritma karena interval $[a, b]$ tidak menjamin keberadaan akar tunggal di dalamnya (kecuali jika $f(a) = 0$ atau $f(b) = 0$ yang berarti batas tersebut sudah merupakan akar eksak).
+1. Evaluasi nilai fungsi pada kedua ujung interval, yaitu $f(a)$ dan $f(b)$.
+2. Periksa syarat pengurungan akar $f(a) \cdot f(b) < 0$. Jika tidak terpenuhi ($f(a) \cdot f(b) \ge 0$), hentikan algoritma karena interval $[a, b]$ tidak menjamin keberadaan akar tunggal di dalamnya.
 
 #### Tahap 2: Pembagian Interval (*Bisection*) & Uji Konvergensi
-
-Inisialisasi penghitung $\text{iterasi} = 0$, kemudian lakukan perulangan selama $\text{iterasi} \lt \text{max\_iter}$:
-
-1. **Hitung Titik Tengah:**
-Bagi dua interval saat ini untuk mendapatkan kandidat akar baru $c$:
+Inisialisasi `iterasi = 0`, lalu lakukan perulangan selama `iterasi < max_iter`:
+1. **Hitung Titik Tengah:** Bagi dua interval saat ini untuk memperoleh kandidat akar baru:
 
 $$c = \frac{a + b}{2}$$
 
+2. **Evaluasi Nilai Fungsi:** Hitung nilai $f(c)$.
+3. **Pengecekan Kriteria Berhenti (*Stopping Criteria*):** Hentikan loop dan kembalikan $c$ jika salah satu kondisi berikut terpenuhi:
+   * Nilai fungsi mendekati nol:
 
-2. **Evaluasi Nilai Fungsi:**
-Hitung nilai $f(c)$.
-3. **Pengecekan Kriteria Berhenti (*Stopping Criteria*):**
-Proses dihentikan dan $c$ ditetapkan sebagai akar hampiran apabila salah satu kondisi berikut terpenuhi:
-* Nilai fungsi sudah cukup dekat dengan nol: $\vert{}f(c)\vert{} \lt \epsilon$
-* Lebar setengah interval sudah lebih kecil dari toleransi galat: $\frac{b - a}{2} \lt \epsilon$
+$$\vert{}f(c)\vert{} < \epsilon$$
 
+   * Lebar setengah interval lebih kecil dari toleransi galat:
+
+$$\frac{b - a}{2} < \epsilon$$
 
 4. **Pembaruan Batas Interval (*Interval Update*):**
-Tentukan sub-interval mana yang masih mengurung akar berdasarkan tanda perkalian fungsi:
-* Jika $f(a) \cdot f(c) \lt 0$, akar berada di **sub-interval kiri** $[a, c]$. Perbarui batas atas dengan $b = c$.
-* Jika tidak ($f(c) \cdot f(b) \lt 0$), akar berada di **sub-interval kanan** $[c, b]$. Perbarui batas bawah dengan $a = c$.
+   * Jika $f(a) \cdot f(c) < 0$, akar berada pada **sub-interval kiri** $[a, c]$. Perbarui batas atas dengan $b = c$.
+   * Jika tidak ($f(c) \cdot f(b) < 0$), akar berada pada **sub-interval kanan** $[c, b]$. Perbarui batas bawah dengan $a = c$.
+5. **Inkremen Iterasi:** Tambahkan nilai `iterasi = iterasi + 1`.
 
-
-5. **Inkremen Iterasi:**
-Tambahkan nilai $\text{iterasi} = \text{iterasi} + 1$.
-
----
-
-### 3. Pseudocode Terstruktur
+### Pseudocode
 
 ```text
 ALGORITMA MetodeBisection(f, a, b, epsilon, max_iter)
@@ -100,16 +85,14 @@ DESKRIPSI:
     // 4. Kembalikan akar hampiran terbaik setelah mencapai batas iterasi
     RETURN c, iterasi
 END ALGORITMA
-
 ```
 
----
+### Kompleksitas & Laju Konvergensi
+* **Laju Konvergensi:** Linear dengan faktor reduksi galat sebesar $0.5$ di setiap iterasi. Jumlah minimum iterasi $n$ yang diperlukan untuk mencapai toleransi $\epsilon$ memenuhi persamaan:
 
-### Ringkasan Kompleksitas & Konvergensi
+$$
+n \ge \left\lceil \log_2 \left( \frac{b - a}{\epsilon} \right) \right\rceil
+$$
 
-* **Laju Konvergensi:** Konvergensi bersifat **linear** dengan faktor reduksi galat sebesar $0.5$ pada setiap langkah. Jumlah minimum iterasi $n$ yang dibutuhkan untuk mencapai toleransi $\epsilon$ dapat diprediksi secara analitis melalui:
-
-$$n \ge \left\lceil \log_2 \left( \frac{b - a}{\epsilon} \right) \right\rceil$$
-
-
-* **Kompleksitas Waktu & Ruang:** Kompleksitas waktu bergantung pada presisi yang diminta yaitu $O\left(\log_2 \frac{b-a}{\epsilon}\right)$ evaluasi fungsi, dengan kompleksitas ruang konstan $O(1)$.
+* **Kompleksitas Waktu:** $O\left(\log_2 \frac{b - a}{\epsilon}\right)$ evaluasi fungsi.
+* **Kompleksitas Ruang:** $O(1)$.

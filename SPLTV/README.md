@@ -122,3 +122,8 @@ END ALGORITMA
 ```
 
 ---
+
+### Ringkasan Kompleksitas
+
+* **Kompleksitas Waktu:** Untuk kasus umum $n$ variabel adalah $O(n^3)$, sedangkan untuk kasus tetap $n = 3$ jumlah operasinya bersifat konstan $O(1)$ (hanya melakukan 2 iterasi pivot utama dan 3 operasi substitusi balik).
+* **Kompleksitas Ruang:** $O(1)$ secara *in-place* karena modifikasi dilakukan langsung pada matriks $A[3][4]$.
